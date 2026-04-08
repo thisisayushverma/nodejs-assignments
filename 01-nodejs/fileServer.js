@@ -15,7 +15,41 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const app = express();
+const app = express();  
 
+app.get('/',(req,res)=>{
+  res.status(200).send("Hellow world")
+})
+app.get('/files', (req, res) => {
+  const directoryPath = path.join(__dirname, 'files');
+
+  fs.readdir(directoryPath, (err, files) => {
+    if (err) {
+      return res.status(500).send('Internal Server Error');
+    }
+    res.status(200).json(files);
+  });
+});
+
+// 📄 GET /file/:filename
+app.get('/file/:filename', (req, res) => {
+  const fileName = req.params.filename;  // ✅ PARAM HERE
+  const filePath = path.join(__dirname, 'files', fileName);
+
+  fs.readFile(filePath, 'utf-8', (err, data) => {
+    if (err) {
+      return res.status(404).send('File not found');
+    }
+    res.status(200).send(data);
+  });
+});
+
+// ❌ Invalid route
+app.use((req, res) => {
+  res.status(404).send("Route not found");
+});
+// app.listen(5000,()=>{
+//   console.log("server is running on port - 5000");
+// })
 
 module.exports = app;

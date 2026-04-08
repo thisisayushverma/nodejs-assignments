@@ -10,7 +10,7 @@ describe('API Endpoints', () => {
     if (globalServer) {
         globalServer.close();
     }
-    globalServer = server.listen(3000);
+    globalServer = server.listen(5000);
     done()
   });
 
@@ -24,8 +24,7 @@ describe('API Endpoints', () => {
           method: 'GET',
           path: '/files'
         };
-      const response = await sendRequest(options);
-
+      const response = await sendRequest(options);      
       expect(response.statusCode).toBe(200);
       expect(response.body.length).toBeGreaterThan(2);
     });
@@ -108,7 +107,7 @@ function sendRequest(options, requestBody) {
       {
         ...options,
         host: 'localhost',
-        port: 3000,
+        port: 5000,
       },
       (res) => {
         let body = '';
